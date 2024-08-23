@@ -1,8 +1,26 @@
 {
   "dependencies": {
-    "@whiskeysockets/baileys": "^6.6.0",
+    "@whiskeysockets/baileys": "^6.7.6",
+    "axios": "^1.7.4",
+    "fuse.js": "^7.0.0",
+    "mysql": "^2.18.1",
+    "nanoid": "^5.0.7",
     "pino": "^8.17.2",
     "qrcode-terminal": "^0.12.0",
+    "sequelize": "^6.37.3",
+    "uuid": "^10.0.0",
     "wa-sticker-formatter": "^4.4.4"
+  },
+  "name": "yuki-auction",
+  "description": "**Package:** WhiskeySocketsBaileys",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "nvlqmn",
+  "license": "ISC",
+  "devDependencies": {
+    "nodemon": "^3.1.4"
   }
 }
