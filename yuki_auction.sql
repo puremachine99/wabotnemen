@@ -36,7 +36,6 @@ CREATE TABLE `lelang` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- Table structure for `koi`
--- Table structure for `koi`
 CREATE TABLE `koi` (
   `koi_id` int(5) NOT NULL AUTO_INCREMENT,  -- Integer auto increment ID
   `lelang_id` char(12) NOT NULL,  -- Foreign key reference to lelang
@@ -50,6 +49,7 @@ CREATE TABLE `koi` (
   `buy_it_now` decimal(10,2) DEFAULT NULL,
   `foto` text DEFAULT NULL,
   `video` text DEFAULT NULL,
+  `sertifikat` text DEFAULT NULL,
   `no_pemenang` varchar(20) DEFAULT NULL,
   `pemenang` varchar(100) DEFAULT NULL,
   `timestamp` timestamp NOT NULL DEFAULT current_timestamp(),
@@ -61,5 +61,36 @@ CREATE TABLE `koi` (
   CONSTRAINT `koi_ibfk_2` FOREIGN KEY (`seller_id`) REFERENCES `sellers` (`seller_id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+-- Table structure for `group`
+CREATE TABLE `group` (
+  `group_id` varchar(36) NOT NULL,  -- ID grup WhatsApp, diambil dari WhatsApp API
+  `seller_id` varchar(36) NOT NULL,  -- Foreign key mengacu ke tabel sellers
+  `lelang_id` char(12) NOT NULL,  -- Foreign key mengacu ke tabel lelang
+  `timestamp` timestamp NOT NULL DEFAULT current_timestamp(),  -- Waktu pendaftaran grup
+  `jadwal` timestamp NULL,  -- Jadwal pelaksanaan lelang
+  PRIMARY KEY (`group_id`),
+  KEY `seller_id` (`seller_id`),
+  KEY `lelang_id` (`lelang_id`),
+  CONSTRAINT `group_ibfk_1` FOREIGN KEY (`seller_id`) REFERENCES `sellers` (`seller_id`) ON DELETE CASCADE,
+  CONSTRAINT `group_ibfk_2` FOREIGN KEY (`lelang_id`) REFERENCES `lelang` (`lelang_id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- Table structure for `bid`
+CREATE TABLE `bid` (
+  `bid_id` int(11) NOT NULL AUTO_INCREMENT,  -- Auto-increment primary key
+  `lelang_id` char(12) NOT NULL,  -- Foreign key ke tabel lelang
+  `group_id` varchar(36) NOT NULL,  -- Foreign key ke tabel group
+  `kode_ikan` varchar(4) NOT NULL,  -- Kode ikan yang di-bid
+  `bidder_id` varchar(36) NOT NULL,  -- Nomor telepon bidder
+  `bidder_nama` varchar(100) NOT NULL,  -- Nama bidder di WhatsApp
+  `price` decimal(10,2) NOT NULL,  -- Harga bid
+  `timestamp` timestamp NOT NULL DEFAULT current_timestamp(),  -- Waktu bid
+  PRIMARY KEY (`bid_id`),
+  KEY `lelang_id` (`lelang_id`),
+  KEY `group_id` (`group_id`),
+  KEY `kode_ikan` (`kode_ikan`),
+  CONSTRAINT `bid_ibfk_1` FOREIGN KEY (`lelang_id`) REFERENCES `lelang` (`lelang_id`) ON DELETE CASCADE,
+  CONSTRAINT `bid_ibfk_2` FOREIGN KEY (`group_id`) REFERENCES `group` (`group_id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 COMMIT;
